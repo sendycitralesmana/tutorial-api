@@ -12,14 +12,14 @@ class PostController extends Controller
 {
     public function index()
     {
-        $posts = Post::with('writer:id,username')->get();
+        $posts = Post::with(['writer:id,username', 'comments:id,post_id,user_id,comments_content'])->get();
         // return response()->json(['data' => $posts]);
         return PostDetailResource::collection($posts);
     }
 
     public function show($id)
     {
-        $post = Post::with('writer:id,username')->findOrFail($id);
+        $post = Post::with(['writer:id,username', 'comments:id,post_id,user_id,comments_content'])->findOrFail($id);
         return new PostDetailResource($post);
     }
 

@@ -23,6 +23,15 @@ class PostDetailResource extends JsonResource
             'author' => $this->author,
             // 'writer' => $this->writer, with relationship writer in model user
             'writer' => $this->whenLoaded('writer'), //eager loading (cek di controller menggunakan relationship atau tidak)
+            'comments' => $this->whenLoaded('comments', function() {
+                return collect($this->comments)->each(function ($comment) {
+                    $comment->commentator;
+                    return $comment;
+                });
+            }),
+            'comment_total' => $this->whenLoaded('comments', function() {
+                return $this->comments->count();
+            })
         ];
     }
 }
