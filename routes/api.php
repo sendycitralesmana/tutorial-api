@@ -22,12 +22,16 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::post('/login', [AuthController::class, 'login']);
 
+// Post
+Route::get('/posts', [PostController::class, 'index']);
+Route::get('/posts/{id}/show', [PostController::class, 'show']);
+
 Route::group(['middleware' => ['auth:sanctum']], function(){
     
     // Post
-    Route::get('/posts', [PostController::class, 'index']);
-    Route::get('/posts/{id}/show', [PostController::class, 'show']);
-    Route::get('/posts/{id}/show2', [PostController::class, 'show2']);
+    Route::post('/posts/store', [PostController::class, 'store']);
+    Route::patch('/posts/{id}/update', [PostController::class, 'update'])->middleware('pemilik-postingan');
+    Route::delete('/posts/{id}/destroy', [PostController::class, 'destroy'])->middleware('pemilik-postingan');
 
     // Auth
     Route::get('/me', [AuthController::class, 'me']);
